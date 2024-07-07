@@ -3,40 +3,50 @@ package com.proiect.awbd.Controller;
 import com.proiect.awbd.Model.Patient;
 import com.proiect.awbd.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/patients")
 public class PatientController {
     @Autowired
     private PatientService patientService;
 
     @GetMapping
-    public List<Patient> getAllPatients() {
-        return patientService.getAllPatients();
-    }
-
-    @GetMapping("/{id}")
-    public Patient getPatientById(@PathVariable Long id) {
-        return patientService.getPatientById(id);
+    public String getAllPatients(Model model) {
+        List<Patient> patients = patientService.getAllPatients();
+        model.addAttribute("patients", patients);
+        return "patients"; // This returns the Thymeleaf template "patients.html"
     }
 
     @PostMapping
-    public Patient createPatient(@RequestBody Patient patient) {
-        return patientService.savePatient(patient);
+    public String createPatient(@RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber) {
+        Patient patient = new Patient();
+        patient.setName(name);
+        patient.setAddress(address);
+        patient.setPhoneNumber(phoneNumber);
+        patientService.savePatient(patient);
+        return "redirect:/patients";
     }
 
-    @PutMapping("/{id}")
-    public Patient updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
-        patient.setId(id);
-        return patientService.savePatient(patient);
+    @PostMapping("/{id}")
+    public String updatePatient(@PathVariable Long id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber) {
+        Patient patient = patientService.getPatientById(id);
+        if (patient != null) {
+            patient.setName(name);
+            patient.setAddress(address);
+            patient.setPhoneNumber(phoneNumber);
+            patientService.savePatient(patient);
+        }
+        return "redirect:/patients";
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePatient(@PathVariable Long id) {
+    @GetMapping("/{id}/delete")
+    public String deletePatient(@PathVariable Long id) {
         patientService.deletePatient(id);
+        return "redirect:/patients";
     }
 }
-

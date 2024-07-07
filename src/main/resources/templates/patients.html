@@ -1,23 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Patients</title>
+    <title>Lista Pacientilor</title>
 </head>
 <body>
-<h1>Patients</h1>
+<h1>Lista Pacientilor</h1>
+
+<h2>Adauga Pacient</h2>
+<form th:action="@{/patients}" method="post">
+    <div>
+        <label>Nume:</label>
+        <input type="text" name="name" />
+    </div>
+    <div>
+        <label>Adresa:</label>
+        <input type="text" name="address" />
+    </div>
+    <div>
+        <label>Numar de Telefon:</label>
+        <input type="text" name="phoneNumber" />
+    </div>
+    <div>
+        <button type="submit">Adauga</button>
+    </div>
+</form>
+
+<h2>Lista Pacientilor</h2>
 <table>
+    <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Phone Number</th>
+        <th>Nume</th>
+        <th>Adresa</th>
+        <th>Numar de Telefon</th>
+        <th>Actiuni</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="patient : ${patients}">
-        <td th:text="${patient.id}"></td>
-        <td th:text="${patient.name}"></td>
-        <td th:text="${patient.address}"></td>
-        <td th:text="${patient.phoneNumber}"></td>
+        <td th:text="${patient.id}">ID</td>
+        <td th:text="${patient.name}">Nume</td>
+        <td th:text="${patient.address}">Adresă</td>
+        <td th:text="${patient.phoneNumber}">Număr de Telefon</td>
+        <td>
+            <a th:href="@{/patients/{id}(id=${patient.id})}">Vizualizează</a>
+            <a th:href="@{/patients/{id}/edit(id=${patient.id})}">Editează</a>
+            <form th:action="@{/patients/{id}/delete(id=${patient.id})}" method="post">
+                <button type="submit">Șterge</button>
+            </form>
+        </td>
     </tr>
+    </tbody>
 </table>
+
+<h2>Editeaza Pacient</h2>
+<form th:action="@{/patients/{id}(id=${editPatient.id})}" method="post" th:if="${editPatient != null}">
+    <div>
+        <label>Nume:</label>
+        <input type="text" name="name" th:value="${editPatient.name}" />
+    </div>
+    <div>
+        <label>Adresa:</label>
+        <input type="text" name="address" th:value="${editPatient.address}" />
+    </div>
+    <div>
+        <label>Numar de Telefon:</label>
+        <input type="text" name="phoneNumber" th:value="${editPatient.phoneNumber}" />
+    </div>
+    <div>
+        <button type="submit">Salveaza</button>
+    </div>
+</form>
+
 </body>
 </html>

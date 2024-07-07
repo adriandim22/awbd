@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/index/**").authenticated()
+                                .requestMatchers("/patients/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(withDefaults())
