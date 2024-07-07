@@ -62,8 +62,6 @@
             <artifactId>webjars-locator-core</artifactId>
         </dependency>
 
-        <!--		Teste-->
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

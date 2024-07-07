@@ -17,7 +17,7 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    // Create a logger instance for logging
+    // Creaza o instanta logger pt logs
     private static final Logger log = LoggerFactory.getLogger(PatientController.class);
 
     @GetMapping
@@ -42,9 +42,8 @@ public class PatientController {
             // Log successful creation
             log.info("Successfully created patient with ID: {}", patient.getId());
         } catch (Exception e) {
-            // Log failure
+            // Log fail
             log.error("Error creating patient with name: {}, address: {}, phone number: {}. Error: {}", name, address, phoneNumber, e.getMessage(), e);
-            // You may want to add error handling or redirect to an error page
         }
 
         return "redirect:/patients";
